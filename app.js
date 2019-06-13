@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying,previousScore;
 init();
 
 //dice = Math.floor(Math.random() * 6)+1; 
@@ -24,15 +24,19 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
     if (gamePlaying) {
         //1.Random Number
         var dice = Math.floor(Math.random() * 6) + 1;
-        var diceDOm = document.querySelector('.dice')
+
+       var diceDOm = document.querySelector('.dice')
         diceDOm.style.display = 'block';
         diceDOm.src = "dice-" + dice + ".png";
-
-
         //2.Display Result
-
         //3 Roll Only if number is not 1
-        if (dice !== 1) {
+
+        if(dice ===6 && previousScore ===6){
+           scores[activePlayer] = 0
+           document.querySelector('#current-' + activePlayer).textContent = '0'
+           nextPlayer();
+        }
+        else if (dice !== 1) {
             //Add Score
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore
@@ -40,7 +44,7 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
             //Next Player
             nextPlayer();
         }
-
+        previousScore = dice;
     }
 }
 );
@@ -50,7 +54,8 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
 
     if (gamePlaying) {
         scores[activePlayer] += roundScore;
-
+        var input =  document.querySelector('.final-score').value;
+        console.log(input)     
         //Update Ui
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
